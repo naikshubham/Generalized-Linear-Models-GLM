@@ -190,6 +190,124 @@ model = sm.glm(y, X, family)
 - `.predict(test_data)` computes predictions
 - `model_GLM.predict(test_data)`
 
+### Binary data and logistic regression
+- Modeling binary data using logistic regression.
+
+#### Binary response data
+- Binary data is one of the most common response data types.As the name suggests it is a two-class category, which we usually denote as 0 or 1. For e.g the loan can either default or not.
+- We often use logistic regression to model the probability of default for loans. Binary data can occur in two-forms, ungrouped and grouped. Ungrouped data is represented by a single event, like the flip of a coin, with two outcomes having a Bernoulli distribution with probabilty p. This is a special case of Binomial with n equal to 1. `Bernoulli (p) or Binomial(n=1, p)`
+- Grouped data, represents multiple events occurring at the same time and measuring the number of successes in an n number of trials. Group data follows a binomial distribution. e.g Flip multiple coins. `Binomial(n, p)`
+
+#### Logistic function
+
+<img src="images/logistic.JPG" width="350" title="logistic function">
+
+- Consider the following binary data used to predict the probability of passing a test given hours of studying, where PASS = 1 & FAIL = 0
+- Mathematically, we would like to predict the probability that the outcome y is in class 1. Here the linear fit is not adequate.
+- The S shaped logistic function or the sigmoid curve comes to the rescue, fitting the data and providing the probability of the outcome given x.
+
+#### Odds and odds ratio
+
+<img src="images/odds.JPG" width="350" title="odds">
+
+- Odds is the ratio of an event occurung to an event not occuring and the odds ratio is just a ratio of two odds.For e.g, given 4 games, the odds of winning a game are 3 to 1, meaning that the event win occured 3 times and loss once.
+
+#### odds and probabilities
+
+<img src="images/odds_prob.JPG" width="350" title="odds_prob">
+<img src="images/prob_odds.JPG" width="350" title="odds_prob">
+
+- Odds are not probabilities but are directly related and can be computed from each other.e.g odds are the ratio of the probability of the event to the probability of non-event. 
+- Writing probability in terms of odds helps us transform our initial unbounded probability model by removing the uper bound whereas the logarithm of odds removes the lower bound.
+
+#### From probability model to logistic regression
+- Steps for logistic regression
+
+<img src="images/lg_1.JPG" width="350" title="LR">
+<img src="images/lg_2.JPG" width="350" title="LR">
+<img src="images/lg_3.JPG" width="350" title="LR">
+
+1. Step 1 : Probability model
+2. Step 2 : Logistic function : Applying the logstic function to the model provides the necessary bounds required for our binary data.
+3. Step 3: Apply logistic function -> INVERSE-LOGIT : We compute mu, the estimated probability but also the probability of event not occurring, i.e 1-mu
+
+<img src="images/lg_4.JPG" width="350" title="LR">
+<img src="images/lg_5.JPG" width="350" title="LR">
+
+- Finally, computing the odds in terms of probability with log transformation is central to logistic regression.
+
+#### Logistic Regression in Python
+
+```python
+model_GLM = glm(formula='y ~x', data = my_data, family = sm.families.Binomial()).fit()
+```
+
+- For binary data, the Binomial distribution with the default logit link function is used. Inputs can be binary 0 or 1, or two-level factor such as Yes, No.
+
+### Interpreting coefficients
+- The value of the estimated coefficients for each model variable, including the intercept, is provided in the coef column.What do these values represent ?
+
+#### Coefficient beta
+
+<img src="images/beta.JPG" width="350" title="beta">
+
+- Coefficient beta determines the rate of increase or decrease of the signmoid curve.
+
+#### Linear Vs Logistic
+- Generally, it is challenging to interpret coefficients of logistic regression due to nonlinearity. It turns out that the interpretation of the coefficients for the logistic regression is the same as for linear models except that in logistic regression coefficients are in terms of the log odds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
