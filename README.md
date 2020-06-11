@@ -256,6 +256,72 @@ model_GLM = glm(formula='y ~x', data = my_data, family = sm.families.Binomial())
 #### Linear Vs Logistic
 - Generally, it is challenging to interpret coefficients of logistic regression due to nonlinearity. It turns out that the interpretation of the coefficients for the logistic regression is the same as for linear models except that in logistic regression coefficients are in terms of the log odds.
 
+### Interpreting model inference
+- The model fit is the best fit given the data we still need information about the significance and size of the effects of the coefficients.
+
+#### Estimation of beta coefficient
+- The regression coefficients are obtained by the maximum likelihood estimation, where the value of the parameters maximizes the probability of the observed data. Likelihood is the probability of data given coefficient estimates and that maximizing likelihood or loglikelihood is mathematically equivalent.
+- The estimated beta coefficient is where the likelihood takes on its maximum value. Unlike least squares estimation in linear regression, the maximization of the likelihood with respect to beta usually requires an iterative solution, which is sometimes called IRLS or iteratively reweighted least squares.
+- To test for the significance of the variables we use the information provided in the model summary, namely standard error, zvalue, its pvalue, and confidence intervals.
+
+#### Standard Error (SE)
+- Standard error is the standard deviation of a statistic, i.e coefficient, and its value depends on the shape of the likelihood.
+- To compute standard error we take the square root of the variance for the variable. The value of the variance is obtained from the diagonal entries of the model variance-covariance matrix, which is obtained using the cov_params function.
+
+```python
+# Extract variance-covariance matrix
+print(model_GLM.cov_params())
+
+# compute standard error for weight
+std_error = np.sqrt(0.141903)
+```
+
+#### Significance testing
+- With significance testing we are concerned whether constraining the parameter values to zero would reduce the model fit. We use z-statistics as the ratio of the estimated coefficients and its standard error, which follows the standard normal distribution.
+- For zvalue greater than 2 we say that the variable is statistically significant.
+
+#### Confidence intervals of beta
+- To report the results in a compelling way we should always report confidence intervals as they provide information on the uncertainity of the estimates. Beta is the estimate and SE is its standard error.
+
+<img src="images/ci.JPG" width="350" title="CI">
+
+#### Extract confidence intervals
+- Using conf_int function we can extract the confidence intervals from the fitted model, where 0 denotes lower bound and one gives upper bound for each variable.
+
+```python
+print(model_GLM.conf_int())
+```
+
+#### Confidence intervals for odds
+- Extract confidence intervals for beta and exponentitate endpoints
+
+```python
+print(np.exp(model_GLM.conf_int()))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
