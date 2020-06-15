@@ -299,6 +299,122 @@ print(model_GLM.conf_int())
 print(np.exp(model_GLM.conf_int()))
 ```
 
+### Computing class predictions
+
+`model_GLM.predict(exog=new_data)`
+
+- From probabilities to classes : having computed predicted probabilities we can classify them using some specified cutoff value.
+- First we extract estimated probabilities using fittedvalues function and convert into an array using values.
+- Next define probability cut off value at 0.4. Next the prediction class is computed based on the cutoff, i.e for all estimated values greater then 0.4 will be classified as 1 and 0 otherwise.
+- Finally,we count the number of observations in each class and report in the table.
+
+```python
+# extract fitted probabilities from model
+crab['fitted'] = model.fittedvalues.values
+
+# define cut-off value
+cut_off = 0.4
+
+# compute class predictions
+crab['pred_class'] = np.where(crab['fitted'] > cut_off, 1 ,0)
+```
+
+```python
+print(pd.crosstab(y_actual, y_predicted, rownames=['Actual'], colnames=['Predicted'],
+margins=True))
+```
+
+### Count data and Poisson distribution
+
+#### Count data
+- Count the number of occurences in a specified unit of time, distance, area or volume.
+
+1. Goals in a soccer match
+2. Number of earthquakes
+3. Number of crab satellites
+4. Number of awards won by a person
+5. Number of bike crossings over the bridge
+
+#### Poisson random variable
+- Events occur independently and randomly
+- Poisson distribution
+
+<img src="images/poisson.JPG" width="350" title="poisson">
+
+- `lambda` : mean and variance
+- The events are always postive, discete and not continuos. Lower bound is zero but no upper bound.
+
+#### Understanding the parameter of the Poisson distribution.
+- Counts can have many zero observations and be right-skewed, which add to the reasons why we wouldn't use the linear model to model count data.
+
+<img src="images/poisson_dist.JPG" width="350" title="poisson_dist">
+
+- Poisson distribution changes as we vary the parameter lambda. Notice that, when the lambda=1, the distribution is highly skewed, but as we increase lambda the distribution spreads and becomes more symmetric.
+
+#### Explanatory variables
+
+<img src="images/poisson_vars.JPG" width="350" title="poisson_vars">
+
+- The explanatory variable x can be a combination of continuos and categorical variables.
+- If all the explanatory variables are categorical then in the literature the model is referred to as the log-linear model.
+
+### Multivariable logistic regression
+
+```python
+model = glm('y ~ x1 + x2 + x3 + x4', data = my_data, family = sm.families.Binomial()).fit()
+```
+
+#### Multicollinearity
+- Occurs when the variables are correlated with each other. Visually we can see that the higher the correlation the more structure is present.
+- Including highly correlated variables leads to inflation of standard errors which can result in coefficient not being statistically significant.
+
+#### Presence of multicollinearity 
+- We can check for multicollinearity by analyzing the coefficient p-value and its standard errors, whether adding or removing the variable significantly changes the coefficients, the logic of coefficient sign and whether there is a significant correlation between the model variables.
+
+#### Variance inflation factor (VIF)
+- The most widely used diagnostic for multicollinearity is the **variance inflation factor of each explanatory variable**.
+- It describes how inflated the variance of the coefficient is compared to what it would be if the variables were not correlated with any other variable in the model.
+- Suggested threshold VIF is 2.5
+
+```python
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
