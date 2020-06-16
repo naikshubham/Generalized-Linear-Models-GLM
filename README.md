@@ -380,6 +380,79 @@ model = glm('y ~ x1 + x2 + x3 + x4', data = my_data, family = sm.families.Binomi
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 ```
 
+### Comparing models
+- After fitting the model, we need to check whether the inclusion of the variables improves the model fit.
+
+#### Deviance
+- To check this we consider a **goodness-of-fit measure called deviance statistic**, which tests the null hypothesis that the fitted model is correct.
+- With the goodness of fit we are measuring whether our model is correctly specified and if we add more complexity would it be better. Complexity in this sense means adding more variables, non-linear or interaction terms.
+- Deviance is measured in terms of log-likelihood, where formally it is defined as **negative two times the log likelihood of the model fit**. `D = -2LL(beta)`
+- It represents the measure of an error where **lower deviance means better model fit**.
+- Benchmark for comparison is the **null deviance**, i.e the deviance from the model with only the intercept term.
+- **The idea is that as we add additional variables to the model, the deviance would decrease therefore providing for a better fit**.
+- Generally, it is assumed that if we were to add a variable with random noise the deviance would decrease by one, so if we add `p predictors` to the model the deviance should `decrease by more than p`.
+
+#### Deviance in Python
+- Can be checked in `model.summary()`
+- In the top right column of the model summary, we are given the log-likelihood and the deviance statistic.
+
+#### Compute deviance
+- Extract null-deviance and deviance
+
+```python
+# extract null deviance
+print(model.null_deviance)
+
+# extract model deviance
+print(model.deviance)
+```
+- Compute deviance using log likelihood -> `-2 * model.llf`
+
+#### Model complexity
+- It is important to note that increasing the number of variables in the model and reducing the deviance may not provide a clear cut path towards a better model fit.
+- Say we have two models with likelihoods L1 and L2 where the likelihood of model 2 is lower. We might say that L2 provides the "better fit", however, we also need to take into consideration the model complexity or the number of parameters to be estimated in model with L2 likelihood compared to model 1.
+- It can happen that when applying both models to new data model one will produce a better fit than model 2, providing that model 2 is overfitting the training dataset and actually has worse fit on new data. In such situation we say that model 2 does not generalize well on unseen data.
+- If this occurs we would need to reduce model complexity to reduce overfitting and improve generalization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```python
+# extract null-deviance and deviance
+print(model.null_deviance)
+
+# extract model deviance
+print(model.deviance)
+```
+
+
+
+
+
+
+
 
 
 
